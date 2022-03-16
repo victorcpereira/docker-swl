@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  database:
+    container_name: database
+    build:
+      dockerfile: docker-config/database-dockerfile
+      context: .
+#    image: mysql:5.7
+    image: victorcpereira/mysql:5.7
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_PASSWORD: $DB_PASSWORD
+    volumes:
+      - ./docker-config/my.cnf:/etc/mysql/my.cnf
+
+  php:
+#    image: php:5.6-apache
+    container_name: php
+    build:
+      dockerfile: docker-config/php5.6-apache-dockerfile
+      context: .
+    image: victorcpereira/php:5.6-apache
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./html:/var/www/html:cached
+    depends_on:
+      - database
+    links:
+      - database
+
+volumes:
+  data:
