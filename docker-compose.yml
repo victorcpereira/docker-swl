@@ -2,7 +2,7 @@ version: "3"
 
 services:
   database:
-    container_name: database
+    container_name: "${PROJECT_NAME}_database"
     build:
       dockerfile: docker-config/database-dockerfile
       context: .
@@ -20,7 +20,7 @@ services:
 
   php:
 #    image: php:5.6-apache
-    container_name: php
+    container_name: "${PROJECT_NAME}_php-apache"
     build:
       dockerfile: docker-config/php5.6-apache-dockerfile
       context: .
@@ -28,12 +28,38 @@ services:
     restart: always
     ports:
       - '80:80'
-    volumes:
-      - ./html:/var/www/html:cached
     depends_on:
       - database
     links:
       - database
+    environment:
+      APACHE_LOG_LEVEL: debug
+      APACHE_BACKEND_HOST: php
+      APACHE_VHOST_PRESET: php
+      APACHE_DOCUMENT_ROOT: /var/www/html/web
+    volumes:
+      - ./html:/var/www/html:cached
+    labels:
+      - "traefik.http.routers.${PROJECT_NAME}_php=apache.rule=Host(`${PROJECT_BASE_URL}`)"
 
-volumes:
-  data:
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: "${PROJECT_NAME}_pma"
+    environment:
+      PMA_HOST: y
+
+      PMA_USER: $DB_USER
+      PMA_PASSWORD: $DB_PASSWORD
+      UPLOAD_LIMIT: 1G
+    labels:
+      - "traefik.http.routers.${PROJECT_NAME}_pma.rule=Host(`pma.${PROJECT_BASE_URL}`)"
+
+  traefik:
+    image: traefik:v2.0
+    container_name: "${PROJECT_NAME}_traefik"
+    command: --api.insecure=true --providers.docker
+    ports:
+      - '8000:80'
+    #    - '8080:8080' # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -33,7 +33,7 @@ install: ##@dev-environment Configure development environment.
 	make down
 	make up
 	make composer-install
-	@docker exec -it php bash create-databases.sh
+	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh
 
 
 #import-db: ##@dev-environment Import locally cached copy of `database.sql` to project dir.
@@ -61,7 +61,7 @@ ps: ##@docker List containers.
 	@docker ps --filter name='$(PROJECT_NAME)*'
 
 shell-php: ##@docker Shell into the container. Specify container name.
-	@docker exec -it php bash
+	@docker exec -it $(PROJECT_NAME)_php-apache bash
 
 shell-database: ##@docker Shell into the container. Specify container name.
 	@docker exec -it database bash
