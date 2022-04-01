@@ -24,14 +24,18 @@ default: up
 
 up: ##@docker Start containers and display status.
 	@echo "Starting up containers for $(PROJECT_NAME)..."
+	docker-compose up -d --remove-orphans
+	docker-compose ps
+	@echo "Site at $(PROJECT_BASE_URL)"
+
+build: ##@docker Start containers and display status.
+	@echo "Starting up containers for $(PROJECT_NAME)..."
 	docker-compose up --build -d --remove-orphans
 	docker-compose ps
-#	@echo "Site at $(PROJECT_BASE_URL):8000/"
-
 
 install: ##@dev-environment Configure development environment.
 	make down
-	make up
+	make build
 	make composer-install
 	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh
 

@@ -12,7 +12,7 @@ services:
     ports:
       - '3307:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_ROOT_PASSWORD: DB_ROOT_PASSWORD
       MYSQL_DATABASE: $DB_NAME
       MYSQL_PASSWORD: $DB_PASSWORD
     volumes:
@@ -26,8 +26,6 @@ services:
       context: .
     image: victorcpereira/php:5.6-apache
     restart: always
-    ports:
-      - '80:80'
     depends_on:
       - database
     links:
@@ -40,19 +38,20 @@ services:
     volumes:
       - ./html:/var/www/html:cached
     labels:
-      - "traefik.http.routers.${PROJECT_NAME}_php=apache.rule=Host(`${PROJECT_BASE_URL}`)"
+      - "traefik.http.routers.${PROJECT_NAME}_php-apache.rule=Host(`${PROJECT_BASE_URL}`)"
+      - "traefik.enable=true"
 
   pma:
     image: phpmyadmin/phpmyadmin
     container_name: "${PROJECT_NAME}_pma"
     environment:
-      PMA_HOST: y
-
+      PMA_HOST: $DB_HOST
       PMA_USER: $DB_USER
       PMA_PASSWORD: $DB_PASSWORD
       UPLOAD_LIMIT: 1G
     labels:
       - "traefik.http.routers.${PROJECT_NAME}_pma.rule=Host(`pma.${PROJECT_BASE_URL}`)"
+      - "traefik.enable=true"
 
   traefik:
     image: traefik:v2.0
@@ -60,6 +59,6 @@ services:
     command: --api.insecure=true --providers.docker
     ports:
       - '8000:80'
-    #    - '8080:8080' # Dashboard
+      - ${TRAEFIK_PORT_DASHBOARD}:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
