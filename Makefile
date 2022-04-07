@@ -38,6 +38,7 @@ install: ##@dev-environment Configure development environment.
 	make build
 	make composer-install
 	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh
+	@docker exec -it  $(PROJECT_NAME)_php-apache php bin/console doctrine:schema:update --force
 
 
 #import-db: ##@dev-environment Import locally cached copy of `database.sql` to project dir.
