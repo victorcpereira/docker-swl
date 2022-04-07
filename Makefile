@@ -40,18 +40,6 @@ install: ##@dev-environment Configure development environment.
 	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh
 	@docker exec -it  $(PROJECT_NAME)_php-apache php bin/console doctrine:schema:update --force
 
-
-#import-db: ##@dev-environment Import locally cached copy of `database.sql` to project dir.
-#	@echo "Dropping old database for $(PROJECT_NAME)..."
-#	docker exec --workdir $(WORKDIR) $(shell docker ps --filter name='$(PROJECT_NAME)_php' --format "{{ .ID }}") drush sql-drop -y
-#	@echo "Importing database for $(PROJECT_NAME)..."
-#	pv build/db/*.sql | docker exec -i $(PROJECT_NAME)_mariadb mysql -u$(DB_USER) -p$(DB_PASSWORD) $(DB_NAME)
-
-#prep-site: ##@docker Prepare website.
-#	make cim
-#	make updb
-#	make cr
-
 down: stop
 
 stop: ##@docker Stop and remove containers.
