@@ -57,7 +57,7 @@ shell-php: ##@docker Shell into the container. Specify container name.
 	@docker exec -it $(PROJECT_NAME)_php-apache bash
 
 shell-database: ##@docker Shell into the container. Specify container name.
-	@docker exec -it database bash
+	@docker exec -it $(PROJECT_NAME)_database bash
 
 logs: ##@docker Display log.
 	docker-compose logs
