@@ -1,5 +1,5 @@
 FROM php:5.6-apache
-WORKDIR /var/www/html
+WORKDIR /var/www/html/swl
 
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
