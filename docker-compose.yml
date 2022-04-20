@@ -6,13 +6,11 @@ services:
     build:
       dockerfile: docker-config/database-dockerfile
       context: .
-#    image: mysql:5.7
     image: victorcpereira/mysql:5.7
-    restart: always
     ports:
       - '3307:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: DB_ROOT_PASSWORD
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
       MYSQL_DATABASE: $DB_NAME
       MYSQL_PASSWORD: $DB_PASSWORD
     volumes:

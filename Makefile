@@ -36,11 +36,22 @@ build: ##@docker Start containers and display status.
 install: ##@dev-environment Configure development environment.
 	make down
 	make build
+	cp docker-config/parameters.yml html/app/config/parameters.yml
+	make fix-permission
 	make composer-install
-	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh
-	@docker exec -it  $(PROJECT_NAME)_php-apache php bin/console doctrine:schema:update --force
+	make create-database
+	make update-database
 
 down: stop
+
+fix-permission:
+	@docker exec -it  $(PROJECT_NAME)_php-apache chmod 777 -R var/
+
+create-database:
+	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh -y
+
+update-database:
+	@docker exec -it  $(PROJECT_NAME)_php-apache php bin/console doctrine:schema:update --force
 
 stop: ##@docker Stop and remove containers.
 	@echo "Stopping containers for $(PROJECT_NAME)..."

@@ -1,0 +1,36 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: database
+    database_port: null
+    database_name: swlnovoc_controle
+    database_user: root
+    database_password: root
+    mailer_spool:
+        type: memory
+    mailer_transport: smtp
+    mailer_host:
+    mailer_user:
+    mailer_password:
+    mailer_auth_mode: login
+    mailer_port: 587
+    mailer_encryption: tls
+    plug_notas_url: 'https://api.sandbox.plugnotas.com.br'
+    plug_notas_api_key:
+    plug_notas_nfpse_sc_client_id:
+    plug_notas_nfpse_sc_client_secret:
+    digital_certificate_crypto_key:
+    digital_certificate_path: '%kernel.project_dir%/app/uploads/DigitalCertificates/'
+    url_pjbank: 'https://api.pjbank.com.br'
+    agencia_pjbank: ag0190
+    app_host: 'https://sistemaswl.com.br'
+    secret:
+    pagarme_url: 'https://api.pagar.me/1/'
+    pagarme_api_key:
+    pagarme_api_cripto:
+    pagarme_swl_receiver_id:
+    pagarme_gateway_credit_cost: 0.3
+    pagarme_gateway_antifraud_cost: 0.5
+    pagarme_plan_default_duration_days: 30
+    pagarme_log_path: /var/log_webhook
+    jwt_key_pass_phrase: swlapi
+    swl_admin_api_key:  
