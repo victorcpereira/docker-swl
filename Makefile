@@ -8,7 +8,7 @@ WHITE  := $(shell tput -Txterm setaf 7)
 YELLOW := $(shell tput -Txterm setaf 3)
 RESET  := $(shell tput -Txterm sgr0)
 
-PROJECT_ROOT ?= /var/www/html/swl
+PROJECT_ROOT ?= /var/www/html/
 
 
 #
@@ -35,7 +35,6 @@ build: ##@docker Start containers and display status.
 
 install: ##@dev-environment Configure development environment.
 	make down
-	make git-clone
 	make build
 	make composer-install
 	@docker exec -it  $(PROJECT_NAME)_php-apache bash create-databases.sh
@@ -50,9 +49,6 @@ stop: ##@docker Stop and remove containers.
 prune: ##@docker Remove containers for project.
 	@echo "Removing containers for $(PROJECT_NAME)..."
 	@docker-compose down -v
-
-git-clone:
-	@git clone git@bitbucket.org:select_sistemas/swl.git html/swl
 
 ps: ##@docker List containers.
 	@docker ps --filter name='$(PROJECT_NAME)*'

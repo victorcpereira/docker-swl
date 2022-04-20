@@ -34,6 +34,7 @@ services:
       APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
       APACHE_VHOST_PRESET: php
+      APACHE_DOCUMENT_ROOT: /var/www/html/web
     volumes:
       - ./html:/var/www/html:cached
     labels:
